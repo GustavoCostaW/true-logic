@@ -1,0 +1,35 @@
+<div class="content">
+  <app-loading *ngIf="addressesStore.loading$ | async"></app-loading>
+  <ngx-datatable
+    #mydatatable
+    *ngIf="addressesStore.addresses$ | async as addresses"
+    class="material"
+    [headerHeight]="50"
+    [limit]="15"
+    [columnMode]="addressesTableConfig.mode"
+    [footerHeight]="50"
+    rowHeight="auto"
+    [columns]="addressesTableConfig.columns"
+    [rows]="addresses"
+  >
+  </ngx-datatable>
+</div>
+
+<ng-template
+  let-rowIndex="rowIndex"
+  let-value="value"
+  let-row="row"
+  let-column="column"
+  #cell
+>
+  <app-address-cell
+    [rowIndex]="rowIndex"
+    [prop]="column.prop"
+    [value]="value"
+    [row]="row"
+    [editing]="!!addressesTableConfig.editing[rowIndex + column.prop]"
+    (editModeActivated)="updateEditModeState(rowIndex, column.prop, true)"
+    (editModeDeactivated)="updateEditModeState(rowIndex, column.prop, false)"
+    (updateRow)="updateValue($event.row, $event.rowIndex)"
+  ></app-address-cell>
+</ng-template>

@@ -1,0 +1,10 @@
+<span *ngIf="!editing" (click)="editModeActivated.next()">
+  {{ value }}
+</span>
+<input
+  autofocus
+  (keydown.enter)="updateValue($event.target.value, rowIndex)"
+  *ngIf="editing"
+  type="text"
+  [value]="value"
+/>
